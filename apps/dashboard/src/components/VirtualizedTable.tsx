@@ -51,11 +51,14 @@ const TableWrapper = styled.div`
 
 const Table = styled.div`
   width: 100%;
-  display: grid;
+  display: block;
 `;
 
 const TableHeader = styled.div`
-  display: contents;
+  display: grid;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 `;
 
 const HeaderCell = styled.div<{ canSort?: boolean }>`
@@ -65,9 +68,6 @@ const HeaderCell = styled.div<{ canSort?: boolean }>`
   color: var(--color-text-primary);
   background: var(--color-bg-tertiary);
   border-bottom: 2px solid var(--color-border);
-  position: sticky;
-  top: 0;
-  z-index: 10;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -91,11 +91,11 @@ const HeaderCell = styled.div<{ canSort?: boolean }>`
 `;
 
 const TableBody = styled.div`
-  display: contents;
+  display: block;
 `;
 
 const Row = styled.div<{ isEven: boolean }>`
-  display: contents;
+  display: grid;
   
   &:hover > div {
     background: var(--color-bg-elevated);
@@ -239,13 +239,13 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = ({
 
   const { rows } = table.getRowModel();
   
-  const parentRef = React.useRef<HTMLDivElement>(null);
+  const [parentEl, setParentEl] = React.useState<HTMLDivElement | null>(null);
 
   const virtualizer = useVirtualizer({
     count: rows.length,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => parentEl,
     estimateSize: () => 50,
-    overscan: 10,
+    overscan: 20,
   });
 
   const items = virtualizer.getVirtualItems();
@@ -253,11 +253,13 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = ({
   const columnSizes = columns.map(col => col.size || 150);
   const totalWidth = columnSizes.reduce((sum, size) => sum + size, 0);
 
+  const gridTemplateColumns = columnSizes.map(s => `${s}px`).join(' ');
+
   return (
     <TableContainer>
-      <TableWrapper ref={parentRef}>
-        <Table style={{ gridTemplateColumns: columnSizes.map(s => `${s}px`).join(' '), minWidth: `${totalWidth}px` }}>
-          <TableHeader>
+      <TableWrapper ref={setParentEl}>
+        <Table style={{ minWidth: `${totalWidth}px` }}>
+          <TableHeader style={{ gridTemplateColumns }}>
             {table.getHeaderGroups().map((headerGroup) =>
               headerGroup.headers.map((header) => (
                 <HeaderCell
@@ -300,6 +302,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = ({
                     width: '100%',
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
+                    gridTemplateColumns,
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

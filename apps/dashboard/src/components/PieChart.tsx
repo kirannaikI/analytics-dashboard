@@ -149,7 +149,7 @@ const renderActiveShape = (props: any) => {
 };
 
 export const PieChart: React.FC<PieChartProps> = ({
-  data,
+  data = [],
   title,
   height = 400,
 }) => {

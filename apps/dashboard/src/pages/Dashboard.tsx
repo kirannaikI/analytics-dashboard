@@ -166,19 +166,9 @@ export const Dashboard: React.FC = () => {
 
   // Initialize data
   useEffect(() => {
-    const loadData = async () => {
-      // Simulate async data loading
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const mockData = generateMockData(100000); // 100k rows
-      dispatch(setData(mockData));
-      
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-    };
-
-    loadData();
+    const mockData = generateMockData(100000); // 100k rows
+    dispatch(setData(mockData));
+    setIsLoading(false);
   }, [dispatch]);
 
   // Calculate chart data
@@ -334,7 +324,7 @@ export const Dashboard: React.FC = () => {
         />
 
         <VirtualizedTable
-          data={paginatedData}
+          data={processedData}
           onSortChange={handleSortChange}
           sortBy={sortBy}
           sortDirection={sortDirection}

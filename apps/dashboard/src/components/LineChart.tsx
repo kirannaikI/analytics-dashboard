@@ -137,7 +137,7 @@ const CustomTooltipContent: React.FC<any> = ({ active, payload, label }) => {
 };
 
 export const LineChart: React.FC<LineChartProps> = ({
-  data,
+  data = [],
   selectedMetrics,
   height = 400,
 }) => {

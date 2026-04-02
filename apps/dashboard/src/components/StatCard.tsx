@@ -101,17 +101,17 @@ const Subtitle = styled.div`
   color: var(--color-text-muted);
 `;
 
-const Trend = styled.div<{ isPositive: boolean }>`
+const Trend = styled.div<{ $isPositive: boolean }>`
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 0.75rem;
   font-weight: 600;
   font-family: var(--font-mono);
-  color: ${props => props.isPositive ? 'var(--color-success)' : 'var(--color-error)'};
+  color: ${props => props.$isPositive ? 'var(--color-success)' : 'var(--color-error)'};
   padding: 4px 8px;
   border-radius: var(--radius-full);
-  background: ${props => props.isPositive ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 102, 0.1)'};
+  background: ${props => props.$isPositive ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 102, 0.1)'};
   border: 1px solid currentColor;
 `;
 
@@ -135,7 +135,7 @@ export const StatCard: React.FC<StatCardProps> = ({
       <Footer>
         {subtitle && <Subtitle>{subtitle}</Subtitle>}
         {trend && (
-          <Trend isPositive={trend.isPositive}>
+          <Trend $isPositive={trend.isPositive}>
             {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
           </Trend>
         )}

@@ -97,7 +97,7 @@ const CustomTooltipContent: React.FC<any> = ({ active, payload }) => {
 };
 
 export const BarChart: React.FC<BarChartProps> = ({
-  data,
+  data = [],
   title,
   height = 400,
   dataKey = 'value',

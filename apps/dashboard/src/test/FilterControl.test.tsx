@@ -16,21 +16,26 @@ describe('FilterControls', () => {
   it('renders search input', () => {
     render(<FilterControls {...defaultProps} />);
     
-    const searchInput = screen.getByPlaceholderText(/search by name/i);
+    const searchInput = screen.getByPlaceholderText(/search by name, email, product, or country/i);
     expect(searchInput).toBeInTheDocument();
   });
 
   it('displays total and filtered row counts', () => {
-    render(<FilterControls {...defaultProps} filteredRows={5000} />);
+    const { container } = render(<FilterControls {...defaultProps} filteredRows={5000} />);
     
-    expect(screen.getByText(/5,000/)).toBeInTheDocument();
-    expect(screen.getByText(/100,000/)).toBeInTheDocument();
+    const statsText = container.querySelector('.stats')?.textContent;
+    expect(statsText).toMatch(/Showing/i);
+    // Flexible match for numbers: allows for any separator (comma, space, dot)
+    // 5,000 or 5 000 or 5.000
+    expect(statsText).toMatch(/5\D?000/);
+    // 100,000 or 100 000 or 1.00.000
+    expect(statsText).toMatch(/1\D?00\D?000/);
   });
 
   it('calls onSearchChange when typing in search input', () => {
     render(<FilterControls {...defaultProps} />);
     
-    const searchInput = screen.getByPlaceholderText(/search by name/i);
+    const searchInput = screen.getByPlaceholderText(/search by name, email, product, or country/i);
     fireEvent.change(searchInput, { target: { value: 'test query' } });
     
     expect(defaultProps.onSearchChange).toHaveBeenCalledWith('test query');

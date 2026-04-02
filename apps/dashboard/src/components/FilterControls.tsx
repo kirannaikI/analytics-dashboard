@@ -206,8 +206,9 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
       <FiltersGrid>
         <FilterGroup>
-          <FilterLabel>Status</FilterLabel>
+          <FilterLabel htmlFor="status-filter">Status</FilterLabel>
           <Select
+            id="status-filter"
             value={filters.status || ''}
             onChange={(e) => onFilterChange('status', e.target.value)}
           >
@@ -220,8 +221,9 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         </FilterGroup>
 
         <FilterGroup>
-          <FilterLabel>Category</FilterLabel>
+          <FilterLabel htmlFor="category-filter">Category</FilterLabel>
           <Select
+            id="category-filter"
             value={filters.category || ''}
             onChange={(e) => onFilterChange('category', e.target.value)}
           >
